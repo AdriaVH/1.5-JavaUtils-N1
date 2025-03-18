@@ -8,7 +8,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         DirectoryList directoryList = new DirectoryList("..\\1.5-JavaUtils-N1");
-        File file = new File("..\\1.5-JavaUtils-N1");
-        directoryList.treeDirectoryPrint(file);
+
+        System.out.println("Alphabetical Listing:");
+        directoryList.alphabeticalContentListing();
+
+        System.out.println("\nTree Structure:");
+        directoryList.treeDirectoryPrint(directoryList.getDirectoryFile(), 0);
     }
 }
