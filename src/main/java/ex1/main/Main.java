@@ -13,6 +13,6 @@ public class Main {
         directoryList.alphabeticalContentListing();
 
         System.out.println("\nTree Structure:");
-        directoryList.treeDirectoryPrint(directoryList.getDirectoryFile(), 0);
+        directoryList.treeDirectoryPrint(directoryList.getDirectory(), 0);
     }
 }
