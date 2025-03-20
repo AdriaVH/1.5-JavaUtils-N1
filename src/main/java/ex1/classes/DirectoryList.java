@@ -3,33 +3,25 @@ package ex1.classes;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Scanner;
 
 
-public class DirectoryList {
-    private final String directoryPath;
-    File file;
+public class DirectoryList implements Serializable {
 
-    public File getFile() {
-        return file;
+
+    public DirectoryList() {
     }
 
-    public DirectoryList(String directoryPath) {
-        this.directoryPath = directoryPath;
-        file = new File(directoryPath);
-    }
     private void validateDirectory(File directory) {
         if (directory == null || !directory.exists() || !directory.isDirectory()) {
             throw new IllegalArgumentException("Invalid directory: Directory is null, does not exist, or is not accessible.");
         }
     }
 
-    public void alphabeticalContentListing() {
-        validateDirectory(file);
-        File[] files = file.listFiles();
+    public void alphabeticalContentListing(File directoryToSort) {
+        validateDirectory(directoryToSort);
+        File[] files = directoryToSort.listFiles();
         Arrays.sort(files);
-        for (File file : files) {
-            System.out.println(file.getName());
-        }
     }
 
     public void treeDirectoryPrint(File directoryToTree, int level) {
@@ -37,37 +29,42 @@ public class DirectoryList {
 
         SimpleDateFormat readableFormat = new SimpleDateFormat("yyyy-MM-dd");
         File[] files = directoryToTree.listFiles();
-        String indent = "  ".repeat(level);
+        String toPrint;
 
         for (File file : files) {
+            toPrint = file.getName() + "\tLAST MODIFIED -> " + readableFormat.format(file.lastModified());
+
             if (file.isDirectory()) {
-                System.out.println(indent + "(D) " + file.getName() + " Last modified -> " + readableFormat.format(file.lastModified()));
+                toPrint = "  ".repeat(level) + "(D) " + toPrint;
+                alphabeticalContentListing(file);
+                System.out.println(toPrint);
                 treeDirectoryPrint(file, level + 1); // Increase level for subdirectory
             } else {
-                System.out.println(indent + "(F) " + file.getName() + " Last modified -> " + readableFormat.format(file.lastModified()));
+                toPrint = "  ".repeat(level) + "(F) " + toPrint;
+                System.out.println(toPrint);
             }
         }
     }
-
-    public void treeDirectorySaveOnTxt(File directoryToTree, int level, BufferedWriter bufferedWriter) {
+    public void treeDirectorySaveOnTxt(File directoryToTree, int level) throws IOException {
         validateDirectory(directoryToTree);
+        FileWriter outputFile = new FileWriter("output.txt", true);
+        BufferedWriter bufferedWriter = new BufferedWriter(outputFile);
 
         SimpleDateFormat readableFormat = new SimpleDateFormat("yyyy-MM-dd");
         File[] files = directoryToTree.listFiles();
-        String lineToWrite;
+        String toPrint;
 
         for (File file : files) {
-            lineToWrite = "  ".repeat(level);
+            toPrint = file.getName() + " Last modified -> " + readableFormat.format(file.lastModified());
 
             if (file.isDirectory()) {
-                lineToWrite += "(D) " + file.getName() + " Last modified -> "
-                        + readableFormat.format(file.lastModified());
-                writeOnTxt(lineToWrite, bufferedWriter);
-                treeDirectorySaveOnTxt(file, level + 1, bufferedWriter);
+                toPrint = "  ".repeat(level) + "(D)  " + toPrint;
+                alphabeticalContentListing(file);
+                writeOnTxt(toPrint, bufferedWriter);
+                treeDirectorySaveOnTxt(file, level + 1);
             } else {
-                lineToWrite += "(F) " + file.getName() + " Last modified -> "
-                        + readableFormat.format(file.lastModified());
-                writeOnTxt(lineToWrite, bufferedWriter);
+                toPrint = "  ".repeat(level) + "(F)  " + toPrint;
+                writeOnTxt(toPrint, bufferedWriter);
             }
         }
     }
@@ -82,6 +79,17 @@ public class DirectoryList {
             e.printStackTrace();
         }
 
+    }
+    public void printTxtOnConsole (File toPrint) throws FileNotFoundException {
+        if (toPrint.isFile()) {
+            Scanner inputFile = new Scanner(toPrint);
+            while (inputFile.hasNextLine()) {
+                System.out.println(inputFile.nextLine());
+            }
+            inputFile.close();
+        } else {
+            throw new FileNotFoundException("This is not a file");
+        }
     }
 }
 
