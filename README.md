@@ -22,14 +22,9 @@ Ara el programa ha de serialitzar un Objecte Java a un fitxer .ser i després l�
 
 📋Requisits
 
-Per poder compilar i executar el projecte la referencia es troba al "README.txt" del directori 
-
-
-🛠️Instal·lació
-
-Passos necessaris per a la instal·lació del projecte en un entorn local.
+Per poder compilar i executar el projecte la referencia es troba al "README.txt" del directori interior.
 
 
 ▶️Execució
 
-Instruccions per a l'execució del projecte un cop instal·lat.
+Seguir instruccions al "README.txt" del directori interior
