@@ -14,6 +14,10 @@ public class DirectoryList implements Serializable {
         this.DIRECTORY = directory;
     }
 
+    public File getDIRECTORY() {
+        return DIRECTORY;
+    }
+
     private void validateDirectory(File directory) {
         if (directory == null || !directory.exists() || !directory.isDirectory()) {
             throw new IllegalArgumentException("Invalid directory: Directory is null, does not exist, or is not accessible.");
@@ -24,6 +28,7 @@ public class DirectoryList implements Serializable {
         validateDirectory(directoryToSort);
         File[] files = directoryToSort.listFiles();
         Arrays.sort(files);
+        Arrays.stream(files).forEach(file -> System.out.println(file.getName()));
     }
 
     public void treeDirectoryPrint(File directoryToTree, int level) {
@@ -31,6 +36,7 @@ public class DirectoryList implements Serializable {
 
         SimpleDateFormat readableFormat = new SimpleDateFormat("yyyy-MM-dd");
         File[] files = directoryToTree.listFiles();
+        Arrays.sort(files);
         String toPrint;
 
         for (File file : files) {
@@ -38,7 +44,6 @@ public class DirectoryList implements Serializable {
 
             if (file.isDirectory()) {
                 toPrint = "  ".repeat(level) + "(D) " + toPrint;
-                alphabeticalContentListing(file);
                 System.out.println(toPrint);
                 treeDirectoryPrint(file, level + 1); // Increase level for subdirectory
             } else {
@@ -97,7 +102,7 @@ public class DirectoryList implements Serializable {
         try (FileOutputStream outFileDirectoryList = new FileOutputStream(fileSer);
              ObjectOutputStream outObjectDirectoryList = new ObjectOutputStream(outFileDirectoryList);
         ) {
-            outObjectDirectoryList.writeObject(DIRECTORY);
+            outObjectDirectoryList.writeObject(this);
             System.out.println("Object serialised");
         } catch (IOException e) {
             e.printStackTrace();

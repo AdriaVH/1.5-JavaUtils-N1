@@ -5,7 +5,12 @@ From the terminal within the directory of this repository  -> ..\1.5-Javautils-N
 
 COMPILATION
 
+Windows
 javac -d out src/main/java/exercises/classes/DirectoryList.java src/main/java/exercises/main/Main.java
+
+
+MacOS or Linux
+javac -d out src\main\java\exercises\classes\DirectoryList.java src\main\java\exercises\main\Main.java
 
 EXECUTION
 

@@ -6,16 +6,17 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
-        File directoryToSort = new File(args[0]);
-
+        String directory;
+        if(args.length < 1){
+            directory = ".."+File.separator+"1.5-JavaUtils-N1"+File.separator+"src"+File.separator+"main";
+        } else {
+            directory = args[0];
+        }
+        File directoryToSort = new File(directory);
         DirectoryList directoryList = new DirectoryList(directoryToSort);
-
-
 
         System.out.println("\nEx 1");
         directoryList.alphabeticalContentListing(directoryToSort);
-        System.out.println();
 
         System.out.println("\nEx 2");
         directoryList.treeDirectoryPrint(directoryToSort, 0);
@@ -25,21 +26,14 @@ public class Main {
         System.out.println("Open output.txt to see the result");
 
         System.out.println("\nEx 4");
-        File toScan = new File("..\\1.5-JavaUtils-N1\\src\\main\\java\\readme.txt");
+        File toScan = new File(".."+File.separator+"1.5-JavaUtils-N1"+File.separator+"src"+File.separator+"main"
+                                        +File.separator+"java"+File.separator+"readme.txt");
         directoryList.printTxtOnConsole(toScan);
 
         System.out.println("\nEx 5");
         DirectoryList desirializeDirectoryList;
         directoryList.serialize("directoryList.ser");
         desirializeDirectoryList = directoryList.desirialize("directoryList.ser");
-
-
-
-
-
-
-
-
 
     }
 }
