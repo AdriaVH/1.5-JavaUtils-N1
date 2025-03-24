@@ -1,4 +1,4 @@
-package ex1.classes;
+package exercises.classes;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -8,8 +8,10 @@ import java.util.Scanner;
 
 public class DirectoryList implements Serializable {
 
+    private final File DIRECTORY;
 
-    public DirectoryList() {
+    public DirectoryList(File directory) {
+        this.DIRECTORY = directory;
     }
 
     private void validateDirectory(File directory) {
@@ -78,8 +80,8 @@ public class DirectoryList implements Serializable {
             System.out.println("Error writing on txt file");
             e.printStackTrace();
         }
-
     }
+
     public void printTxtOnConsole (File toPrint) throws FileNotFoundException {
         if (toPrint.isFile()) {
             Scanner inputFile = new Scanner(toPrint);
@@ -90,6 +92,35 @@ public class DirectoryList implements Serializable {
         } else {
             throw new FileNotFoundException("This is not a file");
         }
+    }
+    public void serialize (String fileSer){
+        try (FileOutputStream outFileDirectoryList = new FileOutputStream(fileSer);
+             ObjectOutputStream outObjectDirectoryList = new ObjectOutputStream(outFileDirectoryList);
+        ) {
+            outObjectDirectoryList.writeObject(DIRECTORY);
+            System.out.println("Object serialised");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public DirectoryList desirialize (String fileSer) {
+        DirectoryList serialisedDirectoryList = null;
+
+        try (FileInputStream fileIn = new FileInputStream(fileSer);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            serialisedDirectoryList = (DirectoryList) in.readObject();
+            System.out.println("Objecte deserialised");
+        } catch (IOException | ClassNotFoundException i) {
+            i.printStackTrace();
+        }
+        return serialisedDirectoryList;
+    }
+
+    @Override
+    public String toString() {
+        return "DirectoryList{" +
+                "directory=" + DIRECTORY +
+                '}';
     }
 }
 
